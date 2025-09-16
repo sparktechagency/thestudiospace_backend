@@ -13,16 +13,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('cover_picture')->nullable();
             $table->string('job_title')->nullable();
-            $table->string('comapny_name')->nullable();
+            $table->string('company_name')->nullable();
             $table->string('location')->nullable();
             $table->string('phone_number')->nullable();
             $table->string('address')->nullable();
             $table->string('website')->nullable();
             $table->text('bio')->nullable();
-            $table->enum('profile_visibility', ['Public', 'Connected', 'Private'])
-                  ->default('Public')
-                  ->index();
-
+            $table->enum('profile_visibility', ['Public', 'Connected', 'Private'])->default('Public')->index();
             $table->timestamps();
         });
     }
