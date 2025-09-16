@@ -14,17 +14,15 @@ class UpdateProfileService
     {
         $user = Auth::user();
         if (isset($data['avatar']) && $data['avatar']->isValid()) {
-            if ($user->avatar && $user->avatar !== 'default/profile.png' &&
-                Storage::disk('public')->exists(str_replace('storage/', '', $user->avatar))) {
-                Storage::disk('public')->delete(str_replace('storage/', '', $user->avatar));
+            if ($user->avatar && $user->avatar !== 'default/profile.png' && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
             }
-            $fileName = time() . '.' . $data['avatar']->getClientOriginalExtension();
-            $path = $data['avatar']->storeAs('uploads/avatars', $fileName, 'public');
+            $path = $data['avatar']->store('avatars', 'public');
             $data['avatar'] = 'storage/' . $path;
         } else {
             unset($data['avatar']);
         }
         $user->update($data);
-        return $this->successResponse($user,"Profile update successfuilly.");
+        return $this->successResponse($user, "Profile updated successfully.");
     }
 }

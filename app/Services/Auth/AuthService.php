@@ -25,5 +25,4 @@ class AuthService
         Mail::to($user->email)->queue(new otpMail($opt_info));
         return $this->successResponse($user,"Registered successfully, check your email for OTP.");
     }
-
 }
