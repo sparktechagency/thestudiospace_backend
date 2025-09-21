@@ -6,10 +6,10 @@ use App\Models\UserSkill;
 use App\Traits\ResponseHelper;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateUserSkillService
+class CreateUserSkillService
 {
    use ResponseHelper;
-    public function updateUserSkill(array $data)
+    public function createUserSkill(array $data)
     {
         $user = Auth::user();
         $data['user_id'] =$user->id;

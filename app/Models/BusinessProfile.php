@@ -6,5 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class BusinessProfile extends Model
 {
-    //
+      // Make sure to define the fillable properties
+    protected $fillable = [
+        'business_name',
+        'art_id',
+        'user_id',
+        'location',
+        'description',
+        'website',
+        'email',
+        'social_links',
+        'privacy_settings',
+        'cover_picture'
+    ];
+
+    // If you want to cast 'social_links' as an array
+    protected $casts = [
+        'social_links' => 'array',
+    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
