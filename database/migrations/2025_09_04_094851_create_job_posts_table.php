@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
+             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('job_title', 255);
             $table->foreignId('art_id')->constrained('arts')->restrictOnDelete();
-            $table->enum('job_type',['Full Time','Part Time','Contract','Internship']);
+            $table->enum('job_type',['Full Time','Part Time','Contract','Internship'])->index();
             $table->string('location')->nullable();
             $table->date('application_deadline')->nullable();
             $table->text('job_description')->nullable();
@@ -25,10 +26,6 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('job_posts');
