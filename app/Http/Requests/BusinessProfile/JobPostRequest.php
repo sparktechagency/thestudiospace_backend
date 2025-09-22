@@ -30,7 +30,8 @@ class JobPostRequest extends FormRequest
             'job_description'    => 'nullable|string',
             'required_skills'    => 'nullable|array',  // Array validation for JSON field
             'required_skills.*'  => 'nullable|string',  // Each element of `required_skills` must be a string
-            'budget'             => 'nullable|numeric|min:0',
+            'start_budget'       => 'nullable|numeric|min:0',
+            'end_budget'       => 'nullable|numeric|min:0',
             'status'             => 'nullable|boolean',
         ];
     }
@@ -49,8 +50,10 @@ class JobPostRequest extends FormRequest
             'application_deadline.date'   => 'Application deadline must be a valid date.',
             'required_skills.array'       => 'Required skills must be an array.',
             'required_skills.*.string'    => 'Each required skill must be a valid string.',
-            'budget.numeric'              => 'Budget must be a valid number.',
-            'budget.min'                  => 'Budget must be a positive number.',
+            'start_budget.numeric'        => 'Start budget must be a valid number.',
+            'start_budget.min'            => 'Start budget must be a positive number.',
+            'end_budget.numeric'          => 'End budget must be a valid number.',
+            'end_budget.min'              => 'End budget must be a positive number.',
             'status.boolean'              => 'Status must be true or false.',
         ];
     }

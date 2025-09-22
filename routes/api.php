@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ArtController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BusinessController;
+use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -53,6 +54,18 @@ Route::prefix('business')->group(function () {
             Route::put('gallery', 'Gallery');
             Route::get('get-job-post', 'getJobPost');
             Route::post('job-post', 'jobPost');
+            Route::put('update-job-post/{job_post_id}', 'updateJobPost');
+            Route::delete('delete-job-post/{job_post_id}', 'deleteJobPost');
+
+        });
+    });
+});
+Route::prefix('job')->group(function () {
+    Route::group(['controller'=>JobController::class],function(){
+        Route::middleware(['auth:sanctum','user'])->group(function () {
+            Route::get('get-job-post', 'getJobPost');
+            Route::get('view-job-post/{Job_post_id}', 'viewJobPost');
+            Route::post('apply-now/{Job_post_id}', 'applyNow');
         });
     });
 });
