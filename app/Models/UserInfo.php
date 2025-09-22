@@ -54,4 +54,8 @@ class UserInfo extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function jobPosts()
+    {
+        return $this->hasMany(JobPost::class, 'user_id', 'user_id');
+    }
 }

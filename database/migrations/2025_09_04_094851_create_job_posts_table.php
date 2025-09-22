@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
-             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('job_title', 255);
             $table->foreignId('art_id')->constrained('arts')->restrictOnDelete();
             $table->enum('job_type',['Full Time','Part Time','Contract','Internship'])->index();
@@ -21,8 +21,9 @@ return new class extends Migration
             $table->date('application_deadline')->nullable();
             $table->text('job_description')->nullable();
             $table->json('required_skills')->nullable();
-            $table->decimal('budget', 10, 2)->nullable();
-            $table->boolean('status')->default(true);
+            $table->decimal('start_budget', 10, 2)->nullable();
+            $table->decimal('end_budget', 10, 2)->nullable();
+            $table->boolean('status')->default(false);
             $table->timestamps();
         });
     }
