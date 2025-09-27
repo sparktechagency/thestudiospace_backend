@@ -3,6 +3,7 @@
 namespace App\Services\BusinessProfile;
 
 use App\Models\BusinessProfile;
+use App\Models\BusinessProfileFollow;
 use App\Traits\ResponseHelper;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,8 +28,17 @@ class GetProfileService
                 return $this->errorResponse("Error decoding social links.");
             }
         }
+          $followStatus = $this->getBusinessProfileFollowStatus($user->id, $businessProfile->id);
+          $businessProfile['follow_status']= $followStatus;
         return $this->successResponse([
             'business_profile' => $businessProfile,
         ], "Business profile fetched successfully.");
     }
+       private function getBusinessProfileFollowStatus($user_id, $business_profile_id)
+        {
+            $follow = BusinessProfileFollow::where('user_id', $user_id)
+                                        ->where('business_profile_id', $business_profile_id)
+                                        ->first();
+            return $follow ? $follow->status : 'unfollowed';
+        }
 }

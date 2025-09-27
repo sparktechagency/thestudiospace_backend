@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('photos')->nullable();
             $table->json('video')->nullable();
             $table->string('document')->nullable();
+            $table->enum('privacy', ['public', 'connections', 'private'])->default('public');
             $table->timestamps();
         });
     }

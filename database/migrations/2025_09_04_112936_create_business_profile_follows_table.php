@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('business_profile_follows', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('business_profile_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('business_profile_id')->constrained('users')->cascadeOnDelete();
             $table->enum('status', ['following', 'unfollowed'])->default('following');
             $table->unique(['user_id', 'business_profile_id']);
             $table->timestamps();

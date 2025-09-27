@@ -12,4 +12,12 @@ class Position extends Model
         'resume',
         'cover_letter',
     ];
+    public function jobPost()
+    {
+        return $this->belongsTo(JobPost::class,'job_post_id');
+    }
+    public function applicant()
+    {
+        return $this->belongsTo(User::class,'applicant_id');
+    }
 }

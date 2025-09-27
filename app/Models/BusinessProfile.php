@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class BusinessProfile extends Model
 {
-      // Make sure to define the fillable properties
     protected $fillable = [
         'business_name',
         'art_id',

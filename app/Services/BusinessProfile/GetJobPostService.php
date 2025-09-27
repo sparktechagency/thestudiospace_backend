@@ -3,6 +3,7 @@
 namespace App\Services\BusinessProfile;
 
 use App\Models\JobPost;
+use App\Models\SavedJob;
 use App\Models\UserInfo;
 use App\Traits\ResponseHelper;
 use Illuminate\Support\Facades\Auth;
@@ -18,6 +19,7 @@ class GetJobPostService
             if (isset($job_post->required_skills) && is_string($job_post->required_skills)) {
                 $job_post->required_skills = json_decode($job_post->required_skills, true);
             }
+             $job_post->is_saved = $this->getSavedJobStatus($job_post->id);
         }
         return $this->successResponse($job_posts, "Job posts fetched successfully.");
     }
@@ -41,5 +43,13 @@ class GetJobPostService
         $sortColumn = $request->get('sort_column', 'id');
         $query->orderBy($sortColumn, $sortBy);
         return $query->paginate(20);
+    }
+     private function getSavedJobStatus($job_post_id)
+    {
+        $user_id = Auth::id();
+        $savedJob = SavedJob::where('user_id', $user_id)
+                            ->where('job_post_id', $job_post_id)
+                            ->first();
+        return $savedJob ? $savedJob->status : false;
     }
 }

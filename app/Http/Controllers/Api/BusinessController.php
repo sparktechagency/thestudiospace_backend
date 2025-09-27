@@ -12,9 +12,11 @@ use App\Services\BusinessProfile\GetGalleryService;
 use App\Services\BusinessProfile\GetJobPostService;
 use App\Services\BusinessProfile\GetProfileService;
 use App\Services\BusinessProfile\JobPostService;
+use App\Services\BusinessProfile\ProfileCountService;
+use App\Services\BusinessProfile\ProfileFollowService;
 use App\Services\BusinessProfile\ProfileService;
 use App\Services\BusinessProfile\UpdateJobPostService;
-use App\Services\Job\ViewJobPostService;
+use App\Services\BusinessProfile\ViewProfileService;
 use Illuminate\Http\Request;
 
 class BusinessController extends Controller
@@ -27,6 +29,9 @@ class BusinessController extends Controller
     protected $getJobPostService;
     protected $udpateJobPostService;
     protected $deleteJobPostService;
+    protected $profileFollowService;
+    protected $viewProfileService;
+    protected $profileCountService;
     public function __construct(
         ProfileService $profileService,
         GetProfileService $getProfileService,
@@ -36,7 +41,9 @@ class BusinessController extends Controller
         GetJobPostService $getJobPostService,
         UpdateJobPostService $updateJobPostService,
         DeleteJobPostService $deleteJobPostService,
-
+        ProfileFollowService $profileFollowService,
+        ViewProfileService $viewProfileService,
+        ProfileCountService $profileCountService,
     ){
         $this->profileService = $profileService;
         $this->getProfileService = $getProfileService;
@@ -46,6 +53,9 @@ class BusinessController extends Controller
         $this->jobPostService = $jobPostService;
         $this->udpateJobPostService = $updateJobPostService;
         $this->deleteJobPostService = $deleteJobPostService;
+        $this->profileFollowService = $profileFollowService;
+        $this->viewProfileService = $viewProfileService;
+        $this->profileCountService = $profileCountService;
     }
     public function getProfile()
     {
@@ -97,6 +107,24 @@ class BusinessController extends Controller
     {
         return $this->execute(function() use($job_post_id){
             return $this->deleteJobPostService->deleteJobPost($job_post_id);
+        });
+    }
+    public function profileFollow($business_profile_id)
+    {
+        return $this->execute(function() use($business_profile_id){
+            return $this->profileFollowService->profileFollow($business_profile_id);
+        });
+    }
+    public function viewProfile($business_profile_id)
+    {
+        return $this->execute(function() use($business_profile_id){
+            return $this->viewProfileService->viewProfile($business_profile_id);
+        });
+    }
+     public function ProfileCount()
+    {
+        return $this->execute(function(){
+            return $this->profileCountService->ProfileCount();
         });
     }
 }
