@@ -49,7 +49,7 @@ class ProfileService
         }
         return $this->successResponse([
             'business_profile' => $businessProfile,
-            'avatar' => $user->avatar, 
+            'avatar' => $user->avatar,
         ], "Business profile created/updated successfully.");
     }
 }

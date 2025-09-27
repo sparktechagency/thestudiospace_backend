@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\CreateUserSkillRequest;
-use App\Http\Requests\User\ProfileVisibilityRequest;
 use App\Http\Requests\User\UpdateUserEducationRequest;
 use App\Http\Requests\User\UpdateUserExperienceRequest;
 use App\Http\Requests\User\UpdateUserGalleryRequest;
 use App\Http\Requests\User\UpdateUserInfoRequest;
-use App\Service\User\UserProfileViewService;
 use App\Services\User\CreateUserSkillService;
 use App\Services\User\DeleteUserSkillService;
 use App\Services\User\GetUserConnectionService;

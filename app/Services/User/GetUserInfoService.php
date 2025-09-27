@@ -17,6 +17,10 @@ class GetUserInfoService
             return $this->errorResponse("User not found.");
         }
         $userInfo = UserInfo::with(['user:id,name,email,avatar,phone_number'])->where('user_id',$user->id)->first();
+        if(!$userInfo)
+        {
+            return $this->successResponse($user,"User info retrieved successfully.");
+        }
         return $this->successResponse($userInfo,"User info retrieved successfully.");
     }
 }

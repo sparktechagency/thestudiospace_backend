@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->json('social_links')->nullable();
             $table->enum('privacy_settings', ['public', 'private'])->default('public')->index();
-            $table->stirng('cover_picture')->nullable();
+            $table->string('cover_picture')->nullable();
             $table->timestamps();
         });
     }
