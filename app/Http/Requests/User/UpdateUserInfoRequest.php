@@ -22,10 +22,11 @@ class UpdateUserInfoRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name'               => 'nullable|string|max:255',
             'cover_picture'      => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:20480',
             'job_title'          => 'nullable|string|max:255',
             'company_name'       => 'nullable|string|max:255',
-            'location'           => 'nullable|string|max:255',
+            // 'location'           => 'nullable|string|max:255',
             'phone_number'       => 'nullable|string|max:20',
             'address'            => 'nullable|string|max:255',
             'website'            => 'nullable|url|max:255',

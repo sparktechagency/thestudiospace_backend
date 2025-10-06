@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\GroupPostController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {
@@ -31,11 +32,13 @@ Route::prefix('user')->group(function () {
             Route::get('info', 'getUserInfo');
             Route::put('info', 'updateUserInfo');
             Route::get('experience', 'getUserExperience');
-            Route::put('experience', 'updateUserExperience');
+            Route::post('create-experience', 'createUserExperience');
+            Route::put('experience/{experience_id}', 'updateUserExperience');
             Route::get('gallery', 'getUserGallery');
             Route::put('gallery', 'updateUserGallery');
             Route::get('education', 'getUserEducation');
-            Route::put('education', 'updateUserEducation');
+            Route::post('create-education', 'createUserEducation');
+            Route::put('education/{education_id}', 'updateUserEducation');
             Route::get('skill', 'getUserSkill');
             Route::post('skill', 'createUserSkill');
             Route::delete('delete-skill/{skill_id}', 'deleteUserSkill');
@@ -84,7 +87,6 @@ Route::prefix('post')->group(function () {
             Route::post('comment/{post_id}', 'comment');
             Route::post('reply-comment/{post_id}/{comment_id}', 'replyComment');
             Route::post('share/{post_id}', 'share');
-
             Route::post('comment-like/{post_id}/{comment_id}', 'commentLike');
             Route::post('reply-comment-like/{post_id}/{comment_id}/{reply_id}', 'replyCommentLike');
             Route::get('get-saved', 'getSaved');
@@ -97,9 +99,28 @@ Route::prefix('message')->group(function () {
         Route::middleware(['auth:sanctum','user'])->group(function () {
             Route::get('chat-list',  'chatList');
             Route::get('chat/{receiver_id}',  'getOrCreateChat');
-            Route::post('send-message',  'sendMessage');
+            Route::post('send-message/{chat_id}',  'sendMessage');
             Route::get('chat-messages/{chat_id}',  'fetchMessages');
             Route::patch('chat-read/{chat_id}',  'markMessagesAsRead');
+            Route::post('actions/{chat_id}',  'performActions');
+        });
+    });
+});
+Route::prefix('group')->group(function () {
+    Route::group(['controller'=>GroupPostController::class],function(){
+        Route::middleware(['auth:sanctum','user'])->group(function () {
+            Route::post('create',  'createGroup');
+
+            Route::get('get-post', 'getPost');
+            Route::post('create-post', 'createPost');
+            Route::post('like/{post_id}', 'like');
+            Route::post('comment/{post_id}', 'comment');
+            Route::post('reply-comment/{post_id}/{comment_id}', 'replyComment');
+            Route::post('share/{post_id}', 'share');
+            Route::post('comment-like/{post_id}/{comment_id}', 'commentLike');
+            Route::post('reply-comment-like/{post_id}/{comment_id}/{reply_id}', 'replyCommentLike');
+            Route::get('get-saved', 'getSaved');
+            Route::post('saved-unsaved/{post_id}', 'savedUnsaved');
         });
     });
 });

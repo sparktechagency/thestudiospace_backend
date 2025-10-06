@@ -25,6 +25,8 @@ class UpdateUserInfoService
             ['user_id' => $user->id],
             $data
         );
+        $user->name = $data['name'] ?? $user->name;
+        $user->save();
         return $this->successResponse($userInfo,"User Information Update/Create successfully.");
    }
 }

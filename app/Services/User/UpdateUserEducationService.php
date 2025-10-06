@@ -9,11 +9,15 @@ use Illuminate\Support\Facades\Auth;
 class UpdateUserEducationService
 {
    use ResponseHelper;
-   public function updateUserEducation($data)
+   public function updateUserEducation($data,$education_id)
    {
+        $education = UserEducation::find($education_id);
+        if(!$education){
+            return $this->errorResponse("Education not found.");
+        }
         $user = Auth::user();
         $data['user_id'] =$user->id;
-        $userInfo = UserEducation::updateOrCreate( $data);
-        return $this->successResponse($userInfo,"User Education Update/Create successfully.");
+        $education->update( $data);
+        return $this->successResponse($education,"Education Update successfully.");
    }
 }
