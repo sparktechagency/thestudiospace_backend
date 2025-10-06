@@ -8,6 +8,10 @@ use App\Http\Requests\User\UpdateUserEducationRequest;
 use App\Http\Requests\User\UpdateUserExperienceRequest;
 use App\Http\Requests\User\UpdateUserGalleryRequest;
 use App\Http\Requests\User\UpdateUserInfoRequest;
+use App\Services\BusinessProfile\UpdateJobPostService;
+use App\Services\User\CreateUserEducationService;
+use App\Services\User\CreateUserExperience;
+use App\Services\User\CreateUserExperienceService;
 use App\Services\User\CreateUserSkillService;
 use App\Services\User\DeleteUserSkillService;
 use App\Services\User\GetUserConnectionService;
@@ -22,7 +26,7 @@ use App\Services\User\UpdateUserGalleryService;
 use App\Services\User\UpdateUserInfoService;
 use App\Services\User\UserConnectionService;
 use App\Services\User\UserProfileCountService;
-use App\Services\User\UserProfileViewService as UserUserProfileViewService;
+use App\Services\User\UserProfileViewService ;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -42,6 +46,8 @@ class UserController extends Controller
     protected $userConnectionService;
     protected $userProfileViewService;
     protected $userProfileCountService;
+    protected $createUserExperienceService;
+    protected $createUserEducationService;
     public function __construct(
         GetUserInfoService $getUserInfoService,
         UpdateUserInfoService $updateUserInfoService,
@@ -56,8 +62,10 @@ class UserController extends Controller
         DeleteUserSkillService $deleteUserSkillService,
         GetUserConnectionService $getUserConnectionService,
         UserConnectionService $userConnectionService,
-        UserUserProfileViewService $userProfileViewService,
+        UserProfileViewService $userProfileViewService,
         UserProfileCountService $userProfileCountService,
+        CreateUserExperienceService $createUserExperienceService,
+        CreateUserEducationService $createUserEducationService,
     )
     {
         $this->getUserInfoService = $getUserInfoService;
@@ -75,6 +83,8 @@ class UserController extends Controller
         $this->userConnectionService = $userConnectionService;
         $this->userProfileViewService = $userProfileViewService;
         $this->userProfileCountService = $userProfileCountService;
+        $this->createUserExperienceService = $createUserExperienceService;
+        $this->createUserEducationService = $createUserEducationService;
     }
     public function getUserInfo()
     {
@@ -95,11 +105,18 @@ class UserController extends Controller
             return $this->getUserExperienceService->getUserExperience();
         });
     }
-    public function updateUserExperience(UpdateUserExperienceRequest $updateUserExperienceRequest)
+    public function createUserExperience(UpdateUserExperienceRequest $updateUserExperienceRequest)
     {
-        return $this->execute(function() use ($updateUserExperienceRequest){
+       return $this->execute(function() use ($updateUserExperienceRequest){
              $data = $updateUserExperienceRequest->validated();
-            return $this->upateUserExperienceService->updateUserExperience($data);
+            return $this->createUserExperienceService->createUserExperience($data);
+        });
+    }
+    public function updateUserExperience(UpdateUserExperienceRequest $updateUserExperienceRequest,$experience_id)
+    {
+        return $this->execute(function() use ($updateUserExperienceRequest,$experience_id){
+             $data = $updateUserExperienceRequest->validated();
+            return $this->upateUserExperienceService->updateUserExperience($data,$experience_id);
         });
     }
     public function getUserGallery()
@@ -121,11 +138,18 @@ class UserController extends Controller
             return $this->getUserEducatonService->getUserEducation();
         });
     }
-    public function updateUserEducation(UpdateUserEducationRequest $updateUserEducationRequest)
+    public function createUserEducation(UpdateUserEducationRequest $updateUserEducationRequest)
     {
         return $this->execute(function() use ($updateUserEducationRequest){
              $data = $updateUserEducationRequest->validated();
-            return $this->updateUserEducationService->updateUserEducation($data);
+            return $this->createUserEducationService->createUserEducation($data);
+        });
+    }
+    public function updateUserEducation(UpdateUserEducationRequest $updateUserEducationRequest, $education_id)
+    {
+        return $this->execute(function() use ($updateUserEducationRequest,$education_id){
+             $data = $updateUserEducationRequest->validated();
+            return $this->updateUserEducationService->updateUserEducation($data,$education_id);
         });
     }
     public function getUserSkill()

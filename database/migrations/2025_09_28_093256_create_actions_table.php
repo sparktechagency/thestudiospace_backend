@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('group_categories', function (Blueprint $table) {
+        Schema::create('actions', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique()->index();
+            $table->foreignId('chat_id')->constrained('chats')->onDelete('cascade');
+            $table->string('action'); // 'Pin', 'Mute', 'Block', 'Delete'
             $table->timestamps();
         });
     }
@@ -23,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('group_categories');
+        Schema::dropIfExists('actions');
     }
 };

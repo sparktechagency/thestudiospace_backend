@@ -16,7 +16,7 @@ class GetUserEducationService
         if(!$user){
             return $this->errorResponse("User not found.");
         }
-        $userInfo = UserEducation::with(['user:id,name,email,avatar,phone_number'])->where('user_id',$user->id)->first();
+        $userInfo = UserEducation::with(['user:id,name,email,avatar,phone_number'])->where('user_id',$user->id)->get();
         return $this->successResponse($userInfo,"User Education retrieved successfully.");
    }
 }

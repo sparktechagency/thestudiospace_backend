@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('sender_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('receiver_id')->constrained('users')->cascadeOnDelete();
+            $table->string('status')->nullable();
             $table->unique(['sender_id', 'receiver_id']);
             $table->timestamps();
         });

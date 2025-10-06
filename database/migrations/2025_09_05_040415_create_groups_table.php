@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
             $table->string('name',255);
-            $table->foreignId('group_categroy_id')->constrained('group_categories')->restrictOnDelete();
+            $table->foreignId('user_id')->constrained('users')->restrictOnDelete();
+            $table->foreignId('art_id')->constrained('arts')->restrictOnDelete();
             $table->string('description')->nullable();
             $table->string('location')->nullable();
             $table->string('banner_image')->nullable();
