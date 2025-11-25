@@ -14,25 +14,29 @@ class UpdateUserGalleryRequest extends FormRequest
         return true;
     }
 
-   public function rules(): array
+    public function rules(): array
     {
         return [
-            'files' => 'required|array|min:1|max:9',
-            'files.*' => 'file|mimes:jpg,jpeg,png,mp4,avi,mov,webm|max:512000', //500 MB
+            'file' => 'required|array|min:1|max:9',
+            'file.*' => 'file|mimes:jpg,jpeg,png,mp4,mov|max:51200', // 50 MB = 51200 KB
         ];
     }
-   public function messages(): array
+
+    public function messages(): array
     {
         return [
-            'files.required' => 'At least one file is required.',
-            'files.array' => 'Files should be in an array format.',
-            'files.min' => 'At least one file is required.',
-            'files.max' => 'You can upload up to 9 files only.',
-            'files.*.file' => 'Each item must be a valid file.',
-            'files.*.mimes' => 'Only image files (jpg, jpeg, png) and video files (mp4, avi, mov, webm) are allowed.',
-            'files.*.size' => 'Each file must be less than 50MB.',
+            'file.required' => 'Please upload at least one file.',
+            'file.array' => 'The uploaded files must be in a valid array format.',
+            'file.min' => 'You must upload at least one file.',
+            'file.max' => 'You cannot upload more than 9 files.',
+            'file.*.file' => 'Each upload must be a valid file.',
+            'file.*.mimes' => 'Only JPG, JPEG, PNG, MP4, and MOV formats are allowed.',
+            'file.*.max' => 'Each file may not be greater than 50MB.',
         ];
     }
+
+
+
 
 
 }

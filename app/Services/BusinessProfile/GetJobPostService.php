@@ -25,7 +25,7 @@ class GetJobPostService
     }
     private function applyFiltersAndSorting($request)
     {
-        $query = JobPost::with(['user:id,name,email,avatar', 'art:id,name', 'userInfo']);
+        $query = JobPost::with(['user:id,name,email,avatar', 'art:id,name', 'userInfo'])->where('status','approved');
         if ($request->has('search') && !empty($request->search)) {
             $query->where('job_title', 'LIKE', '%' . $request->search . '%')
                 ->orWhere('job_description', 'LIKE', '%' . $request->search . '%');

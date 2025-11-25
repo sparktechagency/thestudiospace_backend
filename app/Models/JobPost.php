@@ -35,4 +35,10 @@ class JobPost extends Model
     {
         return $this->belongsTo(UserInfo::class, 'user_id', 'user_id');
     }
+    // JobPost.php
+    public function positions()
+    {
+        return $this->hasMany(Position::class, 'job_post_id');
+    }
+
 }

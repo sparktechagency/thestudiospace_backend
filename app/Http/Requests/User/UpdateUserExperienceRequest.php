@@ -25,7 +25,7 @@ class UpdateUserExperienceRequest extends FormRequest
             'job_title' => 'required|string|max:255',
             'company' => 'required|string|max:255',
             'location' => 'required|string|max:255',
-            'start_date' => 'required|date|before_or_equal:end_date',
+            'start_date' => 'required|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'current' => 'boolean',
             'description' => 'nullable|string|max:1000',

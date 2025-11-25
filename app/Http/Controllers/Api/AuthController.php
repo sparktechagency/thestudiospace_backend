@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\RegisterRequest;
 use App\Http\Requests\Auth\ResendOtpRequest;
 use App\Http\Requests\Auth\ResetPasswordRequest;
+use App\Http\Requests\Auth\UpdateAvatarRequest;
 use App\Http\Requests\Auth\UpdateProfileRequest;
 use App\Http\Requests\Auth\VerifyOtpRequest;
 use App\Services\Auth\AuthService;
@@ -15,10 +16,10 @@ use App\Services\Auth\LoginService;
 use App\Services\Auth\LogoutService;
 use App\Services\Auth\ResendOtpService;
 use App\Services\Auth\ResetPasswordService;
+use App\Services\Auth\UpdateAvatarService;
 use App\Services\Auth\UpdateProfileService;
 use App\Services\Auth\UserProfileService;
 use App\Services\Auth\VerifyOtpService;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -32,6 +33,7 @@ class AuthController extends Controller
     protected $resetPasswordService;
     protected $logoutService;
     protected $googleCallbackService;
+    protected $updateAvatarService;
    public function __construct(
         AuthService $authService,
         VerifyOtpService $verifyOtpService,
@@ -42,6 +44,7 @@ class AuthController extends Controller
         ResetPasswordService $resetPasswordService,
         LogoutService $logoutService,
         GoogleCallbackService $googleCallbackService,
+        UpdateAvatarService $updateAvatarService,
     )
     {
         $this->authService = $authService;
@@ -53,6 +56,7 @@ class AuthController extends Controller
         $this->resetPasswordService = $resetPasswordService;
         $this->logoutService = $logoutService;
         $this->googleCallbackService = $googleCallbackService;
+        $this->updateAvatarService = $updateAvatarService;
     }
    public function register(RegisterRequest $register)
     {
@@ -95,6 +99,13 @@ class AuthController extends Controller
             return $this->updateProfileService->updateProfile($data);
         });
     }
+    public function updateAvatar(UpdateAvatarRequest $updateAvatarRequest)
+    {
+        return $this->execute(function() use ($updateAvatarRequest){
+            $data = $updateAvatarRequest->validated();
+            return $this->updateAvatarService->updateAvatar($data);
+        });
+    }
     public function resetPassword(ResetPasswordRequest $resetPasswordRequest)
     {
         return $this->execute(function() use ($resetPasswordRequest){
@@ -120,4 +131,5 @@ class AuthController extends Controller
             return $this->googleCallbackService->googleCallback();
         });
     }
+
 }

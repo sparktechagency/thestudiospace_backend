@@ -15,9 +15,7 @@ class GetUserConnectionService
         if (!$user) {
             return $this->errorResponse("User not found.");
         }
-        $connections = Conection::where('user_id', $user->id)
-                                ->orWhere('connection_id', $user->id)
-                                ->first();
+        $connections = Conection::with(['user','connection_user'])->where('connection_id', $user->id)->get();
         if (!$connections) {
             return $this->successResponse([], "No connections found.");
         }

@@ -8,6 +8,7 @@ use App\Http\Requests\Post\PostRequest;
 use App\Http\Requests\Post\RelpyCommentRequest;
 use App\Services\Post\CommentLikeService;
 use App\Services\Post\CommentPostService;
+use App\Services\Post\GetCommentservice;
 use App\Services\Post\GetPostService;
 use App\Services\Post\GetSavedService;
 use App\Services\Post\LikePostService;
@@ -16,6 +17,7 @@ use App\Services\Post\ReplyCommentLikeService;
 use App\Services\Post\ReplyCommentPostService;
 use App\Services\Post\SavedUnsavedService;
 use App\Services\Post\SharePostService;
+use App\Services\Post\SinglePostService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -31,6 +33,7 @@ class PostController extends Controller
     protected $replyCommentLikeService;
     protected $getSavedService;
     protected $savedUnsavedService;
+    protected $singlePostService;
     public function __construct(
         PostService $postService,
         GetPostService $getPostService,
@@ -42,6 +45,7 @@ class PostController extends Controller
         ReplyCommentLikeService $replyCommentLikeService,
         GetSavedService $getSavedService,
         SavedUnsavedService $savedUnsavedService,
+        SinglePostService $singlePostService,
     )
     {
         $this->postService = $postService;
@@ -55,6 +59,7 @@ class PostController extends Controller
         $this->replyCommentLikeService = $replyCommentLikeService;
         $this->getSavedService = $getSavedService;
         $this->savedUnsavedService = $savedUnsavedService;
+        $this->singlePostService = $singlePostService;
     }
     public function getPost(Request $request)
     {
@@ -69,10 +74,10 @@ class PostController extends Controller
             return $this->postService->createPost($data);
         });
     }
-    public function Like($post_id)
+    public function Like($post_id,Request $request)
     {
-        return $this->execute(function() use ($post_id){
-            return $this->likePostService->like($post_id);
+        return $this->execute(function() use ($post_id,$request){
+            return $this->likePostService->like($post_id,$request);
         });
     }
     public function comment(CommentRequest $commentRequest, $post_id)
@@ -117,6 +122,12 @@ class PostController extends Controller
     {
         return $this->execute(function() use ($post_id){
             return $this->savedUnsavedService->savedUnsaved($post_id);
+        });
+    }
+    public function singlePost($post_id)
+    {
+        return $this->execute(function() use ($post_id){
+            return $this->singlePostService->singlePost($post_id);
         });
     }
 }

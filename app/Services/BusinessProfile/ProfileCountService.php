@@ -13,9 +13,9 @@ class ProfileCountService
     {
         $profileViewCount = \DB::table('activity_log')
             ->where('subject_type', 'App\Models\BusinessProfile')
-            ->where('subject_id',auth()->id())
-            ->where('event', 'View business profile')
+            ->where('causer_id', auth()->id())
             ->count();
+
         $jobPostClickCount = \DB::table('activity_log')
             ->where('subject_type', 'App\Models\JobPost')
             ->where('event', 'Viewed job post')
@@ -25,7 +25,7 @@ class ProfileCountService
                                                 ->where('status','following')
                                                 ->count();
         return $this->successResponse([
-            'business_following-count' => $business_following_count,
+            'business_following_count' => $business_following_count,
             'profile_view_count' => $profileViewCount,
             'job_post_click_count' => $jobPostClickCount
         ], 'Profile counts retrieved successfully.');
