@@ -23,7 +23,7 @@ return new class extends Migration
             $table->json('required_skills')->nullable();
             $table->decimal('start_budget', 10, 2)->nullable();
             $table->decimal('end_budget', 10, 2)->nullable();
-            $table->boolean('status')->default(false);
+            $table->enum('status',['pending','approved','rejected'])->default('pending');
             $table->timestamps();
         });
     }

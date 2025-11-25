@@ -11,34 +11,25 @@ class UpdateUserGalleryService
 {
    use ResponseHelper;
 
-   public function updateUserGallery($data)
+  public function updateUserGallery($data)
     {
         $user = Auth::user();
         if (!$user) {
             return $this->errorResponse("User not found.");
         }
-        $userGallery = UserGallery::where('user_id', $user->id)->first();
-        if ($userGallery && $userGallery->files) {
-            $files = json_decode($userGallery->files, true);
-            if (is_array($files)) {
-                foreach ($files as $oldFile) {
-                    if (Storage::disk('public')->exists($oldFile)) {
-                        Storage::disk('public')->delete($oldFile);
-                    }
-                }
-            }
-        }
         $newFiles = [];
-        if (isset($data['files']) && is_array($data['files'])) {
-            foreach ($data['files'] as $file) {
+        if (isset($data['file']) && is_array($data['file'])) {
+            foreach ($data['file'] as $file) {
                 $path = $file->store('gallery', 'public');
                 $newFiles[] = 'storage/' . $path;
             }
         }
-        $userGallery = UserGallery::updateOrCreate(
-            ['user_id' => $user->id],
-            ['files' => json_encode($newFiles)]
-        );
-        return $this->successResponse($userGallery, "User gallery updated/created successfully.");
+        foreach($newFiles  as $file){
+            $userGallery = UserGallery::create([
+                'user_id' => $user->id,
+                'file'=>$file,
+            ]);
+        }
+        return $this->successResponse([], "User gallery updated/created successfully.");
     }
 }

@@ -12,7 +12,8 @@ class AppliedJobService
    use ResponseHelper;
     public function appliedJobs()
     {
-        $positions = Position::with(['jobPost','applicant:id,name,email,avatar,phone_number'])->orderBy('id', 'desc')->paginate(20);
+        $positions = Position::with(['jobPost','applicant:id,name,email,avatar,phone_number'])
+        ->orderBy('id', 'desc')->paginate(20);
         foreach ($positions as $position) {
             if (isset($position->jobPost->required_skills) && is_string($position->jobPost->required_skills)) {
                 $position->jobPost->required_skills = json_decode($position->jobPost->required_skills, true);

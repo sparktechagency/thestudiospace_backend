@@ -20,6 +20,10 @@ return new class extends Migration
             $table->enum('role', ['ADMIN','USER'])->default('USER')->index();
             $table->enum('user_type', ['USER', 'BUSINESS'])->default('USER')->index();
             $table->boolean('is_banned')->default(false)->index();
+            $table->boolean('is_online')->default(false)->index();
+            $table->string('fcm_token')->nullable();
+            $table->boolean('is_post')->boolean(true);
+            $table->boolean('is_business')->boolean(true);
             $table->rememberToken();
             $table->timestamps();
         });

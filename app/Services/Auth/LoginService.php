@@ -22,6 +22,10 @@ class LoginService
             return $this->errorResponse('Your email is not verified. Please verify your email to login.', 403);
         }
         $token = $user->createToken('auth_token')->plainTextToken;
+            if ($token) {
+            $user->update(['is_online' => true]);
+        }
+
         return $this->successResponse([
             'user'  => $user,
             'token' => $token,

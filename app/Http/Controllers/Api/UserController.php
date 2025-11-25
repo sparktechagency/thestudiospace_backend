@@ -3,16 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\CoverImageUpdateRequest;
 use App\Http\Requests\User\CreateUserSkillRequest;
 use App\Http\Requests\User\UpdateUserEducationRequest;
 use App\Http\Requests\User\UpdateUserExperienceRequest;
 use App\Http\Requests\User\UpdateUserGalleryRequest;
 use App\Http\Requests\User\UpdateUserInfoRequest;
-use App\Services\BusinessProfile\UpdateJobPostService;
+use App\Services\User\AcceptConnectionService;
+use App\Services\User\CancelConnectionService;
+use App\Services\User\CoverImageUpdateService;
 use App\Services\User\CreateUserEducationService;
-use App\Services\User\CreateUserExperience;
 use App\Services\User\CreateUserExperienceService;
 use App\Services\User\CreateUserSkillService;
+use App\Services\User\DeleteGalleryService;
 use App\Services\User\DeleteUserSkillService;
 use App\Services\User\GetUserConnectionService;
 use App\Services\User\GetUserEducationService;
@@ -20,6 +23,8 @@ use App\Services\User\GetUserExperienceService;
 use App\Services\User\GetUserGalleryService;
 use App\Services\User\GetUserInfoService;
 use App\Services\User\GetUserSkillService;
+use App\Services\User\SingleEducationService;
+use App\Services\User\SingleExperienceService;
 use App\Services\User\UpdateUserEducationService;
 use App\Services\User\UpdateUserExperienceService;
 use App\Services\User\UpdateUserGalleryService;
@@ -48,6 +53,12 @@ class UserController extends Controller
     protected $userProfileCountService;
     protected $createUserExperienceService;
     protected $createUserEducationService;
+    protected $singleExperiencService;
+    protected $singleEducationService;
+    protected $deleteGalleryService;
+    protected $acceptConnectionService;
+    protected $cancelConnectionService;
+    protected $coverImageUpdateService;
     public function __construct(
         GetUserInfoService $getUserInfoService,
         UpdateUserInfoService $updateUserInfoService,
@@ -66,6 +77,12 @@ class UserController extends Controller
         UserProfileCountService $userProfileCountService,
         CreateUserExperienceService $createUserExperienceService,
         CreateUserEducationService $createUserEducationService,
+        SingleExperienceService $singleExperienceService,
+        SingleEducationService $singleEducationService,
+        DeleteGalleryService $deleteGalleryService,
+        AcceptConnectionService $acceptConnectionService,
+        CancelConnectionService $cancelConnectionService,
+        CoverImageUpdateService $coverImageUpdateService,
     )
     {
         $this->getUserInfoService = $getUserInfoService;
@@ -85,6 +102,12 @@ class UserController extends Controller
         $this->userProfileCountService = $userProfileCountService;
         $this->createUserExperienceService = $createUserExperienceService;
         $this->createUserEducationService = $createUserEducationService;
+        $this->singleExperiencService = $singleExperienceService;
+        $this->singleEducationService = $singleEducationService;
+        $this->deleteGalleryService = $deleteGalleryService;
+        $this->acceptConnectionService = $acceptConnectionService;
+        $this->cancelConnectionService = $cancelConnectionService;
+        $this->coverImageUpdateService = $coverImageUpdateService;
     }
     public function getUserInfo()
     {
@@ -99,10 +122,23 @@ class UserController extends Controller
             return $this->updateUserInfoService->updateUserInfo($data);
         });
     }
+    public function updateUserInfoCover(CoverImageUpdateRequest $coverImageUpdateRequest)
+    {
+        return $this->execute(function() use ($coverImageUpdateRequest){
+             $data = $coverImageUpdateRequest->validated();
+            return $this->coverImageUpdateService->updateUserInfoCover($data);
+        });
+    }
     public function getUserExperience()
     {
         return $this->execute(function (){
             return $this->getUserExperienceService->getUserExperience();
+        });
+    }
+    public function singleExperience($experience_id)
+    {
+        return $this->execute(function () use ($experience_id){
+            return $this->singleExperiencService->singleExperience($experience_id);
         });
     }
     public function createUserExperience(UpdateUserExperienceRequest $updateUserExperienceRequest)
@@ -132,10 +168,22 @@ class UserController extends Controller
             return $this->updateUserGalleryService->updateUserGallery($data);
         });
     }
+    public function deleteGallery($gallery_id)
+    {
+        return $this->execute(function()use ($gallery_id){
+            return $this->deleteGalleryService->deleteGallery($gallery_id);
+        });
+    }
     public function getUserEducation()
     {
         return $this->execute(function (){
             return $this->getUserEducatonService->getUserEducation();
+        });
+    }
+      public function singleEducation($education_id)
+    {
+        return $this->execute(function () use($education_id){
+            return $this->singleEducationService->singleEducation($education_id);
         });
     }
     public function createUserEducation(UpdateUserEducationRequest $updateUserEducationRequest)
@@ -193,6 +241,18 @@ class UserController extends Controller
     {
         return $this->execute(function(){
            return $this->userProfileCountService->userProfileCount();
+        });
+    }
+    public function acceptUserConnection($connection_id)
+    {
+        return $this->execute(function() use ($connection_id){
+            return $this->acceptConnectionService->acceptUserConnection($connection_id);
+        });
+    }
+    public function cancelUserConnection($connection_id)
+    {
+        return $this->execute(function() use ($connection_id){
+            return $this->cancelConnectionService->cancelUserConnection($connection_id);
         });
     }
 }

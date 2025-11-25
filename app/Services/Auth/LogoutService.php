@@ -9,7 +9,9 @@ class LogoutService
     use ResponseHelper;
     public function logout()
     {
-        auth()->logout(); // invalidate token
+        $user = auth()->user();
+        $user->update(['is_online'=>false]);
+        auth()->logout();
         return $this->successResponse([],"Successfully logged out.");
     }
 

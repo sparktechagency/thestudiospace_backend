@@ -23,6 +23,7 @@ return new class extends Migration
             $table->json('social_links')->nullable();
             $table->enum('privacy_settings', ['public', 'private'])->default('public')->index();
             $table->string('cover_picture')->nullable();
+            $table->string('avatar')->nullable();
             $table->timestamps();
         });
     }

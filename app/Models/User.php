@@ -21,6 +21,10 @@ class User extends Authenticatable
         'role',
         'user_type',
         'is_banned',
+        'is_online',
+        'fcm_token',
+        'is_business',
+        'is_post'
     ];
     protected $hidden = [
         'password',
@@ -33,5 +37,22 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function routeNotificationForFcm()
+    {
+        return $this->fcm_token;
+    }
+    public function userInfo()
+    {
+        return $this->hasOne(UserInfo::class);
+    }
 
+    public function connections()
+    {
+        return $this->hasMany(Conection::class, 'user_id');
+    }
+
+    public function connectedWith()
+    {
+        return $this->hasMany(Conection::class, 'connection_id');
+    }
 }

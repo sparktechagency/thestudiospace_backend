@@ -16,7 +16,8 @@ class BusinessProfile extends Model
         'email',
         'social_links',
         'privacy_settings',
-        'cover_picture'
+        'cover_picture',
+        'avatar',
     ];
 
     // If you want to cast 'social_links' as an array
@@ -26,5 +27,9 @@ class BusinessProfile extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function art()
+    {
+        return $this->belongsTo(Art::class);
     }
 }
