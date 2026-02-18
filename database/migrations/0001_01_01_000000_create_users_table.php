@@ -22,8 +22,8 @@ return new class extends Migration
             $table->boolean('is_banned')->default(false)->index();
             $table->boolean('is_online')->default(false)->index();
             $table->string('fcm_token')->nullable();
-            $table->boolean('is_post')->boolean(true);
-            $table->boolean('is_business')->boolean(true);
+            $table->boolean('is_post')->default(true);
+            $table->boolean('is_business')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
