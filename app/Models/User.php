@@ -24,7 +24,6 @@ class User extends Authenticatable
         'is_online',
         'fcm_token',
         'is_business',
-        'is_post'
     ];
     protected $hidden = [
         'password',
