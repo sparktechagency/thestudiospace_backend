@@ -32,7 +32,7 @@ class CoverImageUpdateService
             $path = $data['cover_picture']->store('cover_pictures', 'public');
 
             // Save path to userInfo
-            $userInfo->cover_picture = $path;
+            $userInfo->cover_picture ='storage/' . $path;
             $userInfo->save();
         }
 
