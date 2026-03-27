@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('post_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->text('description');
-            $table->enum('type',['post','group'])->default('post');
+            $table->enum('type',['post'])->default('post');
+            $table->enum('status',['Unreviewed','Removed','Approved'])->default('Unreviewed');
             $table->timestamps();
         });
     }

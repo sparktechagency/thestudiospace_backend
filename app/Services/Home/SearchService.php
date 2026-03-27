@@ -21,7 +21,8 @@ class SearchService
          *  SEARCH USERS + USER INFOS (only users with userInfo)
          * ---------------------------------------------------------- */
         $users = User::with(['userInfo'])
-            ->whereHas('userInfo') // ✅ exclude users without userInfo
+            ->where('role','!','ADMIN')
+            ->whereHas('userInfo')
             ->where('name', 'like', "%$keyword%")
             ->orWhereHas('userInfo', function ($q) use ($keyword) {
                 $q->where('job_title', 'like', "%$keyword%")
@@ -96,7 +97,6 @@ class SearchService
         if ($info->job_title) {
             return "Similar interests";
         }
-
         return null;
     }
 }

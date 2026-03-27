@@ -14,6 +14,7 @@ class ReportRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'post_id'     => 'required|integer|exists:posts,id',
             'name'        => 'required|string|max:255',
             'description' => 'required|string|max:1000',
         ];
@@ -22,6 +23,10 @@ class ReportRequest extends FormRequest
     public function messages(): array
     {
         return [
+            'post_id.required' => 'The post field is required.',
+            'post_id.integer'  => 'The post ID must be a valid number.',
+            'post_id.exists'   => 'The selected post does not exist.',
+
             'name.required'        => 'The name field is required.',
             'name.string'          => 'The name must be a valid text.',
             'name.max'             => 'The name may not be greater than 255 characters.',

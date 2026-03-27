@@ -38,7 +38,7 @@ class HomeController extends Controller
     public function report(ReportRequest $request)
     {
         return $this->execute(function() use ($request) {
-             $data = $request->validated();
+            $data = $request->validated();
             return $this->reportService->report($data);
         });
     }

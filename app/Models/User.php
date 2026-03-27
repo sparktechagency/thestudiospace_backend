@@ -54,4 +54,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Conection::class, 'connection_id');
     }
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

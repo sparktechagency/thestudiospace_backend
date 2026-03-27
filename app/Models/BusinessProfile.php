@@ -32,4 +32,13 @@ class BusinessProfile extends Model
     {
         return $this->belongsTo(Art::class);
     }
+     public function jobs()
+    {
+        return $this->hasMany(\App\Models\JobPost::class, 'user_id', 'user_id');
+    }
+      public function followers()
+    {
+        return $this->hasMany(\App\Models\BusinessProfileFollow::class, 'business_profile_id')
+                    ->where('status', 'following'); // only count active followers
+    }
 }

@@ -4,6 +4,8 @@ use App\Http\Controllers\Api\ArtController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BusinessController;
 use App\Http\Controllers\Api\BusinessProfileController;
+use App\Http\Controllers\Api\ContentMorderatinController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\JobController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\PostController;
@@ -24,6 +26,7 @@ Route::prefix('auth')->group(function () {
         Route::post('login',  'login');
         Route::get('google-login',  'googleLogin');
         Route::get('google/callback',  'googleCallback');
+        Route::patch('update-online-status/{userId}','updateOnlineStatus');
         Route::middleware(['auth:sanctum','user'])->group(function () {
             Route::get('profile','getProfile');
             Route::put('profile-update','updateProfile');
@@ -87,6 +90,8 @@ Route::prefix('business')->group(function () {
         Route::middleware(['auth:sanctum','user'])->group(function () {
             Route::get('get-profile', 'getProfile');
             Route::post('profile', 'Profile');
+            Route::post('update-cover', 'updateCover');
+            Route::post('update-avatar', 'updateAvatar');
             Route::get('get-gallery', 'getGallery');
             Route::put('gallery', 'Gallery');
             Route::get('get-job-post', 'getJobPost');
@@ -156,7 +161,6 @@ Route::prefix('group')->group(function () {
             Route::post('reply-comment/{group_id}/{group_post_id}/{group_comment_id}', 'replyComment');
             Route::post('reply-comment-like/{group_id}/{group_post_id}/{group_comment_id}/{reply_id}', 'replyCommentLike');
             Route::post('saved-unsaved/{group_id}/{group_post_id}', 'savedUnsaved');
-
             // Route::get('get-saved', 'getSaved');
         });
     });
@@ -171,6 +175,14 @@ Route::prefix('notification')->group(function () {
     });
 });
 //admin panel
+Route::prefix('overview')->group(function () {
+    Route::group(['controller'=>DashboardController::class],function(){
+        Route::middleware(['auth:sanctum','admin'])->group(function () {
+            Route::get('dashboard', 'dashboard');
+            Route::get('analytics', 'analytics');
+        });
+    });
+});
 Route::prefix('user-management')->group(function () {
     Route::group(['controller'=>UserManagementController::class],function(){
         Route::middleware(['auth:sanctum','admin'])->group(function () {
@@ -209,3 +221,15 @@ Route::prefix('job-management')->group(function () {
         });
     });
 });
+Route::prefix('content-moderation')->group(function () {
+    Route::group(['controller'=>ContentMorderatinController::class],function(){
+        Route::middleware(['auth:sanctum','admin'])->group(function () {
+            Route::get('get-report', 'getReport');
+            Route::get('view-report/{id}', 'viewReport');
+            Route::put('approve/{id}', 'approve');
+            Route::put('remove-content/{id}', 'reject');
+            Route::delete('delete/{id}', 'delete');
+        });
+    });
+});
+

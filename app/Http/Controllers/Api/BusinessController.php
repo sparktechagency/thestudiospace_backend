@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BusinessProfile\GalleryRequest;
 use App\Http\Requests\BusinessProfile\JobPostRequest;
 use App\Http\Requests\BusinessProfile\ProfileRequest;
+use App\Http\Requests\BusinessProfile\UpdateAvatarRequest;
+use App\Http\Requests\BusinessProfile\UpdateCoverRequest;
 use App\Services\BusinessProfile\DeleteJobPostService;
 use App\Services\BusinessProfile\GalleryService;
 use App\Services\BusinessProfile\GetGalleryService;
@@ -15,6 +17,8 @@ use App\Services\BusinessProfile\JobPostService;
 use App\Services\BusinessProfile\ProfileCountService;
 use App\Services\BusinessProfile\ProfileFollowService;
 use App\Services\BusinessProfile\ProfileService;
+use App\Services\BusinessProfile\UpdateAvatarService;
+use App\Services\BusinessProfile\UpdateCoverService;
 use App\Services\BusinessProfile\UpdateJobPostService;
 use App\Services\BusinessProfile\ViewProfileService;
 use Illuminate\Http\Request;
@@ -32,6 +36,8 @@ class BusinessController extends Controller
     protected $profileFollowService;
     protected $viewProfileService;
     protected $profileCountService;
+    protected $updateCoverService;
+    protected $updateAvatarService;
     public function __construct(
         ProfileService $profileService,
         GetProfileService $getProfileService,
@@ -44,6 +50,8 @@ class BusinessController extends Controller
         ProfileFollowService $profileFollowService,
         ViewProfileService $viewProfileService,
         ProfileCountService $profileCountService,
+        UpdateCoverService $updateCoverService,
+        UpdateAvatarService $updateAavatarService,
     ){
         $this->profileService = $profileService;
         $this->getProfileService = $getProfileService;
@@ -56,6 +64,8 @@ class BusinessController extends Controller
         $this->profileFollowService = $profileFollowService;
         $this->viewProfileService = $viewProfileService;
         $this->profileCountService = $profileCountService;
+        $this->updateCoverService = $updateCoverService;
+        $this->updateAvatarService = $updateAavatarService;
     }
     public function getProfile()
     {
@@ -68,6 +78,20 @@ class BusinessController extends Controller
         return $this->execute(function () use ($profileRequest){
             $data = $profileRequest->validated();
             return $this->profileService->profile($data);
+        });
+    }
+    public function updateCover(UpdateCoverRequest $updateCoverRequest)
+    {
+        return $this->execute(function () use ($updateCoverRequest){
+            $data = $updateCoverRequest->validated();
+            return $this->updateCoverService->updateCover($data);
+        });
+    }
+    public function updateAvatar(UpdateAvatarRequest $updateAavatarRequest)
+    {
+        return $this->execute(function () use ($updateAavatarRequest){
+            $data = $updateAavatarRequest->validated();
+            return $this->updateAvatarService->updateAvatar($data);
         });
     }
     public function getGallery()

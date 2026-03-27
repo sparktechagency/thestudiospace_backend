@@ -17,6 +17,7 @@ use App\Services\Auth\LogoutService;
 use App\Services\Auth\ResendOtpService;
 use App\Services\Auth\ResetPasswordService;
 use App\Services\Auth\UpdateAvatarService;
+use App\Services\Auth\updateOnlineStatusService;
 use App\Services\Auth\UpdateProfileService;
 use App\Services\Auth\UserProfileService;
 use App\Services\Auth\VerifyOtpService;
@@ -34,6 +35,7 @@ class AuthController extends Controller
     protected $logoutService;
     protected $googleCallbackService;
     protected $updateAvatarService;
+    protected $updateOnlineStatusService;
    public function __construct(
         AuthService $authService,
         VerifyOtpService $verifyOtpService,
@@ -45,6 +47,7 @@ class AuthController extends Controller
         LogoutService $logoutService,
         GoogleCallbackService $googleCallbackService,
         UpdateAvatarService $updateAvatarService,
+        updateOnlineStatusService $updateOnlineStatusService,
     )
     {
         $this->authService = $authService;
@@ -57,6 +60,7 @@ class AuthController extends Controller
         $this->logoutService = $logoutService;
         $this->googleCallbackService = $googleCallbackService;
         $this->updateAvatarService = $updateAvatarService;
+        $this->updateOnlineStatusService = $updateOnlineStatusService;
     }
    public function register(RegisterRequest $register)
     {
@@ -131,5 +135,12 @@ class AuthController extends Controller
             return $this->googleCallbackService->googleCallback();
         });
     }
+     public function updateOnlineStatus($id)
+    {
+        return $this->execute(function () use($id){
+            return $this->updateOnlineStatusService->updateOnlineStatus($id);
+        });
+    }
+
 
 }

@@ -50,5 +50,9 @@ class Post extends Model
     {
         return $this->hasMany(Share::class);
     }
-    
+      public function savedPosts()
+    {
+        return $this->hasMany(SavedPost::class); // SavePost is the model for saved posts
+    }
+
 }
